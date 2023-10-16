@@ -1,6 +1,6 @@
 # clientsocket.py
 
-import socket, pickle
+import socket, pickle, hmac, hashlib
 from message import Message
 from response_message import Response_Message
 
@@ -41,8 +41,12 @@ def create_unique_nonce():
 
 
 def create_mac(message_and_nonce):
-    # a implementar
-    return "example mac"
-
+    # convert into bytes to use hmac libary
+    key = bytes([KEY])
+    message_and_nonce_bytes = message_and_nonce.encode('utf-8')
+    #if HMAC == 'SHA256':
+    hash_algorithm = hashlib.sha256
+    hmac_resumen_hex = hmac.new(key, message_and_nonce_bytes, hash_algorithm).hexdigest()
+    return hmac_resumen_hex
 
 main()
