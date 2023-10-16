@@ -10,6 +10,8 @@ PORT = 3030  # Port to listen on (non-privileged ports are > 1023)
 HMAC = "SHA256"
 KEY = 24  # ejemplo
 
+NONCES = []
+
 
 def main():
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -38,8 +40,11 @@ def main():
 
 
 def check_nonces(nonce):
-    # a implementar
-    return False
+    if nonce in NONCES:
+        return False
+    else:
+        NONCES.append(nonce)
+        return True
 
 
 def check_mac(message):

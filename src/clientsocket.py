@@ -1,6 +1,6 @@
 # clientsocket.py
 
-import socket, pickle, hmac, hashlib
+import socket, pickle, hmac, hashlib, datetime
 from message import Message
 from response_message import Response_Message
 
@@ -35,9 +35,12 @@ def main():
                 response.print()
 
 
+# devuelve la fecha y hora actuales al milisegundo exacto
 def create_unique_nonce():
-    # a implementar
-    return "example nonce"
+    present = datetime.datetime.now()
+    # milliseconds son suficiente?
+    nonce = present.strftime("%Y%m%d%H%M%S%f")[:-3]
+    return nonce
 
 
 def create_mac(message_and_nonce):
