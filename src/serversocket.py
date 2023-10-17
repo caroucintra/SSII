@@ -1,6 +1,6 @@
 # serversocket.py
 
-import socket, pickle
+import socket, pickle, hmac, hashlib
 from message import Message
 from response_message import Response_Message
 
@@ -9,6 +9,8 @@ PORT = 3030  # Port to listen on (non-privileged ports are > 1023)
 
 HMAC = "SHA256"
 KEY = 24  # ejemplo
+
+NONCES = []
 
 
 def main():
@@ -38,13 +40,23 @@ def main():
 
 
 def check_nonces(nonce):
-    # a implementar
-    return False
+    if nonce in NONCES:
+        return False
+    else:
+        NONCES.append(nonce)
+        return True
 
 
 def check_mac(message):
-    # a implementar
-    return False
+    original_mac_hex = message.get_mac()
+    full_message = message.string_entire_message()
+    # convert into bytes to use hmac libary
+    key = bytes([KEY])
+    full_message_bytes = full_message.encode('utf-8')
+    #if HMAC == 'SHA256':
+    hash_algorithm = hashlib.sha256
+    new_hmac_hex = hmac.new(key, full_message_bytes, hash_algorithm).hexdigest()
+    return original_mac_hex == new_hmac_hex
 
 
 main()
