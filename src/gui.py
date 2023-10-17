@@ -57,6 +57,7 @@ class MainWindow(QMainWindow):
     def run(self):
         print(self.origin_input, self.destination_input, self.quantity_input)
         start()
+        self.close()
 
 
 def start():
