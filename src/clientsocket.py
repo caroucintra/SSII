@@ -23,7 +23,7 @@ def main():
             # eligir nonce y añadir al mensaje con add_nonce()
             m.add_nonce(create_unique_nonce())
             # crear mac con la función HMAC a base del mensaje con nonce (conseguido por la función string_entire_message()) y añadir lo al mensaje con add_mac(mac)
-            m.add_mac(create_mac(m.string_entire_message))
+            m.add_mac(create_mac(m.string_entire_message()))
 
             data_string = pickle.dumps(m)
             s.send(data_string)

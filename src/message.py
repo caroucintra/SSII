@@ -42,3 +42,6 @@ class Message:
             + " amount: "
             + str(self._amount)
         )
+
+    def format_data(self):
+        return "(" + self._account_origin + self._account_destination + self._amount + ")"

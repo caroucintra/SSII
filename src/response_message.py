@@ -13,6 +13,6 @@ class Response_Message:
         print(
             "Message is integrate: "
             + str(self._is_integrate)
-            + " nonce is unique: "
+            + "\nNonce is unique: "
             + str(self._is_correct_nonce)
         )

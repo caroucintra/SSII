@@ -1,6 +1,6 @@
 # serversocket.py
 
-import socket, pickle, hmac, hashlib
+import socket, pickle, hmac, hashlib, logging
 from message import Message
 from response_message import Response_Message
 
@@ -13,7 +13,9 @@ KEY = 24  # ejemplo
 NONCES = []
 
 
+
 def main():
+    initialize_log()
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind((HOST, PORT))
         s.listen()
@@ -33,6 +35,9 @@ def main():
                     is_correct_nonce = check_nonces(m.get_nonce())
                     # verificar mac
                     is_integrate = check_mac(m)
+                    # ini
+                    if not all([is_correct_nonce, is_integrate]):
+                        add_log_entry(m, is_correct_nonce, is_integrate)
                     response = Response_Message(is_integrate, is_correct_nonce)
 
                     data_string = pickle.dumps(response)
@@ -57,6 +62,19 @@ def check_mac(message):
     hash_algorithm = hashlib.sha256
     new_hmac_hex = hmac.new(key, full_message_bytes, hash_algorithm).hexdigest()
     return original_mac_hex == new_hmac_hex
+
+
+def initialize_log():
+    log_format = '%(asctime)s - %(message)s'
+    logging.basicConfig(filename='logfile.log', filemode='a', format=log_format, level=logging.INFO)
+    logging.info("Session started.")
+
+
+def add_log_entry(message, is_correct_nonce, is_integrate):
+    if not is_integrate:
+        logging.info("ERROR: %s. Transaction is not integrate. Different HMAC.", message.format_data())
+    if not is_correct_nonce:
+        logging.info("ERROR: %s. Transaction is not integrate. Nonce has already been used.", message.format_data())
 
 
 main()
