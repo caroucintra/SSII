@@ -3,33 +3,17 @@
 # of threading
 # importing the threading module
 import threading
-import gui
+import time
  
- 
-def print_cube(num):
-    # function to print cube of given num
-    print("Cube: {}" .format(num * num * num))
- 
- 
-def print_square(num):
-    # function to print square of given num
-    print("Square: {}" .format(num * num))
- 
- 
-if __name__ =="__main__":
-    # creating thread
-    t1 = threading.Thread(target=gui.startGUI)
-    t2 = threading.Thread(target=print_cube, args=(10,))
- 
-    # starting thread 1
-    t1.start()
-    # starting thread 2
-    t2.start()
- 
-    # wait until thread 1 is completely executed
-    t1.join()
-    # wait until thread 2 is completely executed
-    t2.join()
- 
-    # both threads completely executed
-    print("Done!")
+class MyThread:
+    def __init__(self, func):
+        self.fun = func
+        self.start()
+
+    def start(self):
+        self.thread = threading.Thread(target=self.fun, args=())
+        self.thread.start()
+
+    def join(self):
+        self.thread.join()
+        time.sleep(1)

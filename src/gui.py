@@ -2,6 +2,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 import sys
+import clientsocket
 
 class MainWindow(QMainWindow):
     def __init__(self, *args, **kwargs):
@@ -25,6 +26,9 @@ class MainWindow(QMainWindow):
         run = QPushButton("RUN")
         run.clicked.connect(self.run)
 
+        close = QPushButton("CLOSE")
+        close.clicked.connect(self.closeGUI)
+
         widgets = [
             QLabel("Cuenta Origen"),
             origin,
@@ -33,6 +37,7 @@ class MainWindow(QMainWindow):
             QLabel("Cantidad"),
             quantity,
             run,
+            close,
         ]
 
         for w in widgets:
@@ -54,14 +59,14 @@ class MainWindow(QMainWindow):
     def quantity_edited(self, s):
         self.quantity_input = s
 
+
     def run(self):
-        print(self.origin_input, self.destination_input, self.quantity_input)
-        start()
+        clientsocket.setParams(self.origin_input, self.destination_input, self.quantity_input)
         self.close()
 
+    def closeGUI(self):
+        self.close()
 
-def start():
-    print("starts app")
 
 def startGUI():
     app = QApplication(sys.argv)
