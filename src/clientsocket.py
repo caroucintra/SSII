@@ -31,29 +31,33 @@ def setParams(ori, dest, amo):
 
 
 def main():
+    while True:
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            s.connect((HOST, PORT))
+            # Reemplazar por el input de GUI
+            #print("Enter the amount: ")
+            #amount = input()
+            #
+            gui.startGUI()
+            setParams(gui.origin_input, gui.destination_input, gui.quantity_input)
+            
+            m = Message(origin, destination, amount)
 
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.connect((HOST, PORT))
-        # Reemplazar por el input de GUI
-        #print("Enter the amount: ")
-        #amount = input()
-        #
-        m = Message(origin, destination, amount)
+            # eligir nonce y añadir al mensaje con add_nonce()
+            m.add_nonce(create_unique_nonce())
+            # crear mac con la función HMAC a base del mensaje con nonce (conseguido por la función string_entire_message()) y añadir lo al mensaje con add_mac(mac)
+            m.add_mac(create_mac(m.string_entire_message()))
 
-        # eligir nonce y añadir al mensaje con add_nonce()
-        m.add_nonce(create_unique_nonce())
-        # crear mac con la función HMAC a base del mensaje con nonce (conseguido por la función string_entire_message()) y añadir lo al mensaje con add_mac(mac)
-        m.add_mac(create_mac(m.string_entire_message()))
+            data_string = pickle.dumps(m)
+            s.send(data_string)
 
-        data_string = pickle.dumps(m)
-        s.send(data_string)
-
-        data = s.recv(1024)
-        data_variable = pickle.loads(data)
-        if type(data_variable) == Response_Message:
-            response = data_variable
-            global response_msg
-            response_msg = response.print()
+            data = s.recv(1024)
+            data_variable = pickle.loads(data)
+            if type(data_variable) == Response_Message:
+                response = data_variable
+                global response_msg
+                response_msg = response.print()
+                gui.showResults(response_msg)
 
 
 # devuelve la fecha y hora actuales al milisegundo exacto
@@ -73,9 +77,4 @@ def create_mac(message_and_nonce):
     hmac_resumen_hex = hmac.new(key, message_and_nonce_bytes, hash_algorithm).hexdigest()
     return hmac_resumen_hex
 
-if __name__ =="__main__":
-    while True:
-        gui.startGUI()
-        setParams(gui.origin_input, gui.destination_input, gui.quantity_input)
-        main()
-        gui.showResults(response_msg)
+main()

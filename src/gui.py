@@ -2,7 +2,6 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 import sys
-import clientsocket
 
 class MainWindow(QMainWindow):
     def __init__(self, *args, **kwargs):
@@ -60,7 +59,6 @@ class MainWindow(QMainWindow):
         self.quantity_input = s
 
     def run(self):
-        clientsocket.setParams(self.origin_input, self.destination_input, self.quantity_input)
         global origin_input, destination_input, quantity_input
         origin_input = self.origin_input
         destination_input = self.destination_input
@@ -77,7 +75,7 @@ class ResultsWindow(QMainWindow):
         self.setWindowTitle("Transmisión Punto-Punto")
         layout = QVBoxLayout()
 
-        results = QLabel(response_toshow)
+        results = QLabel(response)
         
         close = QPushButton("CLOSE")
         close.clicked.connect(self.closeGUI)
@@ -96,23 +94,6 @@ class ResultsWindow(QMainWindow):
         # Set the central widget of the Window. Widget will expand
         # to take up all the space in the window by default.
         self.setCentralWidget(widget)
-
-    def origin_edited(self, s):
-        self.origin_input = s
-
-    def destination_edited(self, s):
-        self.destination_input = s
-
-    def quantity_edited(self, s):
-        self.quantity_input = s
-
-    def run(self):
-        clientsocket.setParams(self.origin_input, self.destination_input, self.quantity_input)
-        global origin_input, destination_input, quantity_input
-        origin_input = self.origin_input
-        destination_input = self.destination_input
-        quantity_input = self.quantity_input
-        self.close()
 
     def closeGUI(self):
         self.close()
