@@ -65,7 +65,6 @@ class MainWindow(QMainWindow):
         origin_input = self.origin_input
         destination_input = self.destination_input
         quantity_input = self.quantity_input
-        print(origin_input, destination_input, quantity_input)
         self.close()
 
     def closeGUI(self):
@@ -75,11 +74,10 @@ class ResultsWindow(QMainWindow):
     def __init__(self, *args, **kwargs):
         super(ResultsWindow, self).__init__(*args, **kwargs)
 
-        print(*args[0])
         self.setWindowTitle("Transmisión Punto-Punto")
         layout = QVBoxLayout()
 
-        results = QLabel()
+        results = QLabel(response_toshow)
         
         close = QPushButton("CLOSE")
         close.clicked.connect(self.closeGUI)
@@ -114,7 +112,6 @@ class ResultsWindow(QMainWindow):
         origin_input = self.origin_input
         destination_input = self.destination_input
         quantity_input = self.quantity_input
-        print(origin_input, destination_input, quantity_input)
         self.close()
 
     def closeGUI(self):
@@ -127,9 +124,10 @@ def startGUI():
     window.show()
     app.exec_()
 
-def showResults(response):
+def showResults(r):
     app = QApplication(sys.argv)
-
+    global response
+    response = r
     window = ResultsWindow()
     window.show()
     app.exec_()
