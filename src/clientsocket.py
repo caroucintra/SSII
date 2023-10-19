@@ -3,10 +3,10 @@
 import socket, pickle, hmac, hashlib, datetime
 from message import Message
 from response_message import Response_Message
-import time
 
 import gui
-import thread
+
+response_msg = 'bibibi'
 
 HOST = "127.0.0.1"  # The server's hostname or IP address
 PORT = 3030  # The port used by the server
@@ -16,7 +16,6 @@ KEY = 24  # ejemplo
 
 
 def setParams(ori, dest, amo):
-    print(ori, dest, amo)
     global origin, destination, amount
     if (ori != ""):
         origin = ori
@@ -32,9 +31,7 @@ def setParams(ori, dest, amo):
         amount = 0
 
 
-def startClient():
-    print('a ser chamado')
-    print(origin, destination, amount)
+def main():
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.connect((HOST, PORT))
@@ -49,17 +46,16 @@ def startClient():
             m.add_nonce(create_unique_nonce())
             # crear mac con la función HMAC a base del mensaje con nonce (conseguido por la función string_entire_message()) y añadir lo al mensaje con add_mac(mac)
             m.add_mac(create_mac(m.string_entire_message))
-            print('client cenas 1')
 
             data_string = pickle.dumps(m)
             s.send(data_string)
 
             data = s.recv(1024)
-            print('client cenas')
             data_variable = pickle.loads(data)
             if type(data_variable) == Response_Message:
                 response = data_variable
-                response.print()
+                global response_msg
+                response_msg = response.print()
 
 
 # devuelve la fecha y hora actuales al milisegundo exacto
@@ -80,13 +76,8 @@ def create_mac(message_and_nonce):
     return hmac_resumen_hex
 
 if __name__ =="__main__":
-    # creating thread
-
-    t1 = thread.MyThread(gui.startGUI())
-    t2 = thread.MyThread(startClient)
- 
-    t1.join()
-    t2.join()
- 
-    # both threads completely executed
-    print("Done!")
+    while True:
+        gui.startGUI()
+        setParams(gui.origin_input, gui.destination_input, gui.quantity_input)
+        #main()
+        gui.showResults(response_msg)

@@ -16,3 +16,7 @@ class Response_Message:
             + " nonce is unique: "
             + str(self._is_correct_nonce)
         )
+        return ("Message is integrate: "
+            + str(self._is_integrate)
+            + " nonce is unique: "
+            + str(self._is_correct_nonce))
