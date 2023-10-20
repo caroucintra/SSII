@@ -31,13 +31,13 @@ def setParams(ori, dest, amo):
 
 
 def main():
-    while True:
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            s.connect((HOST, PORT))
-            # Reemplazar por el input de GUI
-            #print("Enter the amount: ")
-            #amount = input()
-            #
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.connect((HOST, PORT))
+        # Reemplazar por el input de GUI
+        #print("Enter the amount: ")
+        #amount = input()
+        #
+        while True:
             gui.startGUI()
             setParams(gui.origin_input, gui.destination_input, gui.quantity_input)
             
@@ -55,7 +55,6 @@ def main():
             data_variable = pickle.loads(data)
             if type(data_variable) == Response_Message:
                 response = data_variable
-                global response_msg
                 response_msg = response.print()
                 gui.showResults(response_msg)
 

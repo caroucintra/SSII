@@ -25,7 +25,7 @@ def main():
             while True:
                 data = conn.recv(1024)
                 if not data:
-                    break
+                   continue
                 data_variable = pickle.loads(data)
 
                 if type(data_variable) == Message:
