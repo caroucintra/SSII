@@ -9,6 +9,7 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__(*args, **kwargs)
 
         self.setWindowTitle("Transmisión Punto-Punto")
+        self.setWindowFlag(Qt.WindowCloseButtonHint, False)
         layout = QVBoxLayout()
 
         origin = QLineEdit()
@@ -78,6 +79,8 @@ class ResultsWindow(QMainWindow):
         super(ResultsWindow, self).__init__(*args, **kwargs)
 
         self.setWindowTitle("Transmisión Punto-Punto")
+        self.setWindowFlag(Qt.WindowCloseButtonHint, False)
+        
         layout = QVBoxLayout()
 
         results = QLabel(response)

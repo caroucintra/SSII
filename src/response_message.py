@@ -10,13 +10,9 @@ class Response_Message:
         return self.is_correct_nonce
 
     def print(self):
-        print(
-            "Message is integrate: "
+        msg = ("Message is integrate: "
             + str(self._is_integrate)
             + "\nNonce is unique: "
-            + str(self._is_correct_nonce)
-        )
-        return ("Message is integrate: "
-            + str(self._is_integrate)
-            + " nonce is unique: "
             + str(self._is_correct_nonce))
+        print(msg)
+        return msg
