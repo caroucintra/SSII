@@ -33,12 +33,11 @@ def setParams(ori, dest, amo):
 def main():
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.connect((HOST, PORT))
-        # Reemplazar por el input de GUI
-        #print("Enter the amount: ")
-        #amount = input()
-        #
+
         while True:
-            gui.startGUI()
+            running = gui.startGUI()
+            if running == False:
+                break
             setParams(gui.origin_input, gui.destination_input, gui.quantity_input)
             
             m = Message(origin, destination, amount)
@@ -56,7 +55,7 @@ def main():
             if type(data_variable) == Response_Message:
                 response = data_variable
                 response_msg = response.print()
-                gui.showResults(response_msg)
+                running = gui.showResults(response_msg)
 
 
 # devuelve la fecha y hora actuales al milisegundo exacto

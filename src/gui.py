@@ -1,3 +1,4 @@
+from PyQt5 import QtGui
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
@@ -63,9 +64,13 @@ class MainWindow(QMainWindow):
         origin_input = self.origin_input
         destination_input = self.destination_input
         quantity_input = self.quantity_input
+        global running
+        running = True
         self.close()
 
     def closeGUI(self):
+        global running
+        running = False
         self.close()
 
 class ResultsWindow(QMainWindow):
@@ -77,12 +82,12 @@ class ResultsWindow(QMainWindow):
 
         results = QLabel(response)
         
-        close = QPushButton("CLOSE")
-        close.clicked.connect(self.closeGUI)
+        restart = QPushButton("RESTART")
+        restart.clicked.connect(self.restartGUI)
 
         widgets = [
             results,
-            close,
+            restart,
         ]
 
         for w in widgets:
@@ -95,15 +100,17 @@ class ResultsWindow(QMainWindow):
         # to take up all the space in the window by default.
         self.setCentralWidget(widget)
 
-    def closeGUI(self):
+    def restartGUI(self):
+        global running
+        running = True
         self.close()
 
 def startGUI():
     app = QApplication(sys.argv)
-
     window = MainWindow()
     window.show()
     app.exec_()
+    return running
 
 def showResults(r):
     app = QApplication(sys.argv)
@@ -112,3 +119,4 @@ def showResults(r):
     window = ResultsWindow()
     window.show()
     app.exec_()
+    return running
