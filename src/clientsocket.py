@@ -44,8 +44,18 @@ def main():
 
             # eligir nonce y añadir al mensaje con add_nonce()
             m.add_nonce(create_unique_nonce())
+            print(m._nonce)
+            
+            #prueba: replay
+            #m.add_nonce("1234")
+            
             # crear mac con la función HMAC a base del mensaje con nonce (conseguido por la función string_entire_message()) y añadir lo al mensaje con add_mac(mac)
             m.add_mac(create_mac(m.string_entire_message()))
+
+            #prueba: man in the middle
+            #m._amount += "0"
+
+            
 
             data_string = pickle.dumps(m)
             s.send(data_string)
@@ -61,7 +71,7 @@ def main():
 # devuelve la fecha y hora actuales al milisegundo exacto
 def create_unique_nonce():
     present = datetime.datetime.now()
-    # milliseconds son suficiente?
+    # tiempo en milisegundos
     nonce = present.strftime("%Y%m%d%H%M%S%f")[:-3]
     return nonce
 
