@@ -1,6 +1,6 @@
 # serversocket.py
 
-import socket, pickle, hmac, hashlib, logging
+import socket, pickle, hmac, hashlib, logging, json
 from message import Message
 from response_message import Response_Message
 
@@ -10,8 +10,8 @@ PORT = 3030  # Port to listen on (non-privileged ports are > 1023)
 HMAC = "SHA256"
 KEY = 24  # ejemplo
 
-NONCES = []
-
+#NONCES = []
+NONCES_FILE = "nonces.json"
 
 
 def main():
@@ -45,10 +45,17 @@ def main():
 
 
 def check_nonces(nonce):
+    try:
+        with open(NONCES_FILE, "r") as file:
+            NONCES = json.load(file)
+    except FileNotFoundError:
+        NONCES = []
     if nonce in NONCES:
         return False
     else:
         NONCES.append(nonce)
+        with open(NONCES_FILE, "w") as file:
+            json.dump(NONCES, file)
         return True
 
 
