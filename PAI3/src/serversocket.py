@@ -1,6 +1,7 @@
 # serversocket.py
 
 import socket, pickle, hmac, hashlib, logging, json
+import ssl
 from message import Message
 from response_message import Response_Message
 
@@ -13,19 +14,21 @@ KEY = 24  # ejemplo
 #NONCES = []
 NONCES_FILE = "nonces.json"
 
+context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+context.load_cert_chain('cert.pem', 'key.pem')
 
 def main():
     initialize_log()
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind((HOST, PORT))
         s.listen()
-        conn, addr = s.accept()
-        with conn:
+        with context.wrap_socket(s, server_side=True) as ssock:
+            conn, addr = ssock.accept()
             print(f"Connected by {addr}")
             while True:
                 data = conn.recv(1024)
                 if not data:
-                   continue
+                    continue
                 data_variable = pickle.loads(data)
 
                 if type(data_variable) == Message:

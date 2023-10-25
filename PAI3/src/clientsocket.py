@@ -1,11 +1,15 @@
 # clientsocket.py
 
 import socket, pickle, hmac, hashlib, datetime
+import ssl
 from message import Message
 from response_message import Response_Message
 
 import gui
+hostname = 'www.python.org'
 
+context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+context.load_verify_locations(cafile='cert.pem')
 
 HOST = "127.0.0.1"  # The server's hostname or IP address
 PORT = 3030  # The port used by the server
@@ -32,40 +36,38 @@ def setParams(ori, dest, amo):
 
 def main():
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.connect((HOST, PORT))
+        with context.wrap_socket(s, server_hostname=hostname) as ssock:
 
-        while True:
-            running = gui.startGUI()
-            if running == False:
-                break
-            setParams(gui.origin_input, gui.destination_input, gui.quantity_input)
-            
-            m = Message(origin, destination, amount)
+            while True:
+                running = gui.startGUI()
+                if running == False:
+                    break
+                setParams(gui.origin_input, gui.destination_input, gui.quantity_input)
+                
+                m = Message(origin, destination, amount)
 
-            # eligir nonce y añadir al mensaje con add_nonce()
-            m.add_nonce(create_unique_nonce())
-            print(m._nonce)
-            
-            #prueba: replay
-            #m.add_nonce("1234")
-            
-            # crear mac con la función HMAC a base del mensaje con nonce (conseguido por la función string_entire_message()) y añadir lo al mensaje con add_mac(mac)
-            m.add_mac(create_mac(m.string_entire_message()))
+                # eligir nonce y añadir al mensaje con add_nonce()
+                m.add_nonce(create_unique_nonce())
+                print('nonce: '+m._nonce)
+                
+                #prueba: replay
+                #m.add_nonce("1234")
+                
+                # crear mac con la función HMAC a base del mensaje con nonce (conseguido por la función string_entire_message()) y añadir lo al mensaje con add_mac(mac)
+                m.add_mac(create_mac(m.string_entire_message()))
 
-            #prueba: man in the middle
-            #m._amount += "0"
+                #prueba: man in the middle
+                #m._amount += "0"
 
-            
+                data_string = pickle.dumps(m)
+                ssock.send(data_string)
 
-            data_string = pickle.dumps(m)
-            s.send(data_string)
-
-            data = s.recv(1024)
-            data_variable = pickle.loads(data)
-            if type(data_variable) == Response_Message:
-                response = data_variable
-                response_msg = response.print()
-                running = gui.showResults(response_msg)
+                data = ssock.recv(1024)
+                data_variable = pickle.loads(data)
+                if type(data_variable) == Response_Message:
+                    response = data_variable
+                    response_msg = response.print()
+                    running = gui.showResults(response_msg)
 
 
 # devuelve la fecha y hora actuales al milisegundo exacto
