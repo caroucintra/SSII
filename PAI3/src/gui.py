@@ -8,21 +8,21 @@ class MainWindow(QMainWindow):
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
 
-        self.setWindowTitle("Transmisión Punto-Punto")
+        self.setWindowTitle("BYODSEC")
         self.setWindowFlag(Qt.WindowCloseButtonHint, False)
         layout = QVBoxLayout()
 
-        origin = QLineEdit()
-        self.origin_input = ""
-        origin.textEdited.connect(self.origin_edited)
+        usuario = QLineEdit()
+        self.usuario_input = ""
+        usuario.textEdited.connect(self.usuario_edited)
 
-        destination = QLineEdit()
-        self.destination_input = ""
-        destination.textEdited.connect(self.destination_edited)
+        contrasena = QLineEdit()
+        self.contrasena_input = ""
+        contrasena.textEdited.connect(self.contrasena_edited)
 
-        quantity = QLineEdit()
-        self.quantity_input = ""
-        quantity.textEdited.connect(self.quantity_edited)
+        mensaje = QLineEdit()
+        self.mensaje_input = ""
+        mensaje.textEdited.connect(self.mensaje_edited)
 
         run = QPushButton("RUN")
         run.clicked.connect(self.run)
@@ -31,12 +31,12 @@ class MainWindow(QMainWindow):
         close.clicked.connect(self.closeGUI)
 
         widgets = [
-            QLabel("Cuenta Origen"),
-            origin,
-            QLabel("Cuenta Destino"),
-            destination,
-            QLabel("Cantidad"),
-            quantity,
+            QLabel("usuario"),
+            usuario,
+            QLabel("contraseña"),
+            contrasena,
+            QLabel("mensaje"),
+            mensaje,
             run,
             close,
         ]
@@ -51,20 +51,20 @@ class MainWindow(QMainWindow):
         # to take up all the space in the window by default.
         self.setCentralWidget(widget)
 
-    def origin_edited(self, s):
-        self.origin_input = s
+    def usuario_edited(self, s):
+        self.usuario_input = s
 
-    def destination_edited(self, s):
-        self.destination_input = s
+    def contrasena_edited(self, s):
+        self.contrasena_input = s
 
-    def quantity_edited(self, s):
-        self.quantity_input = s
+    def mensaje_edited(self, s):
+        self.mensaje_input = s
 
     def run(self):
-        global origin_input, destination_input, quantity_input
-        origin_input = self.origin_input
-        destination_input = self.destination_input
-        quantity_input = self.quantity_input
+        global usuario_input, contrasena_input, mensaje_input
+        usuario_input = self.usuario_input
+        contrasena_input = self.contrasena_input
+        mensaje_input = self.mensaje_input
         global running
         running = True
         self.close()
@@ -78,7 +78,7 @@ class ResultsWindow(QMainWindow):
     def __init__(self, *args, **kwargs):
         super(ResultsWindow, self).__init__(*args, **kwargs)
 
-        self.setWindowTitle("Transmisión Punto-Punto")
+        self.setWindowTitle("BYODSEC")
         self.setWindowFlag(Qt.WindowCloseButtonHint, False)
         
         layout = QVBoxLayout()

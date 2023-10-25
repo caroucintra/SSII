@@ -18,20 +18,20 @@ HMAC = "SHA256"
 KEY = 24  # ejemplo
 
 
-def setParams(ori, dest, amo):
-    global origin, destination, amount
-    if (ori != ""):
-        origin = ori
+def setParams(user, pas, msj):
+    global usuario, contrasena, mensaje
+    if (user != ""):
+        usuario = user
     else:
-        origin = "L"
-    if (dest != ""):
-        destination = dest
+        usuario = "L"
+    if (pas != ""):
+        contrasena = pas
     else:
-        destination = "R"
-    if (amo != ""):
-        amount = amo
+        contrasena = "R"
+    if (msj != ""):
+        mensaje = msj
     else:
-        amount = '0'
+        mensaje = '0'
 
 
 def main():
@@ -42,9 +42,9 @@ def main():
                 running = gui.startGUI()
                 if running == False:
                     break
-                setParams(gui.origin_input, gui.destination_input, gui.quantity_input)
+                setParams(gui.usuario_input, gui.contrasena_input, gui.mensaje_input)
                 
-                m = Message(origin, destination, amount)
+                m = Message(usuario, contrasena, mensaje)
 
                 # eligir nonce y añadir al mensaje con add_nonce()
                 m.add_nonce(create_unique_nonce())
@@ -57,7 +57,7 @@ def main():
                 m.add_mac(create_mac(m.string_entire_message()))
 
                 #prueba: man in the middle
-                #m._amount += "0"
+                #m._mensaje += "0"
 
                 data_string = pickle.dumps(m)
                 ssock.send(data_string)
