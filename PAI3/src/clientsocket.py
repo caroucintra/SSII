@@ -6,7 +6,7 @@ from message import Message
 from response_message import Response_Message
 
 import gui
-hostname = 'www.python.org'
+hostname = 'ST8'
 
 context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
 context.load_verify_locations(cafile='cert.pem')
@@ -37,7 +37,7 @@ def setParams(user, pas, msj):
 def main():
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         with context.wrap_socket(s, server_hostname=hostname) as ssock:
-
+            ssock.connect((HOST, PORT))
             while True:
                 running = gui.startGUI()
                 if running == False:
