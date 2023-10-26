@@ -1,8 +1,8 @@
 class Message:
-    def __init__(self, account_origin, account_destination, amount):
-        self._account_origin = account_origin
-        self._account_destination = account_destination
-        self._amount = amount
+    def __init__(self, username, password, message):
+        self._username = username
+        self._password = password
+        self._message = message
 
     def add_mac(self, mac):
         self._mac = mac
@@ -12,9 +12,9 @@ class Message:
 
     def string_entire_message(self):
         return (
-            self._account_origin
-            + self._account_destination
-            + self._amount
+            self._username
+            + self._password
+            + self._message
             + self._nonce
         )
 
@@ -24,24 +24,22 @@ class Message:
     def get_nonce(self):
         return self._nonce
 
-    def get_amount(self):
-        return self._amount
+    def get_message(self):
+        return self._message
 
-    def get_account_origin(self):
-        return self._account_origin
+    def get_username(self):
+        return self._username
 
-    def get_account_destination(self):
-        return self._account_destination
+    def get_password(self):
+        return self._password
 
     def print(self):
         print(
-            "From "
-            + self._account_origin
-            + " to "
-            + self._account_destination
-            + " amount: "
-            + str(self._amount)
+            "From user: "
+            + self._username
+            + ", message: "
+            + str(self._message)
         )
 
     def format_data(self):
-        return "(" + self._account_origin + self._account_destination + self._amount + ")"
+        return "(" + self._username + self._password + self._message + ")"

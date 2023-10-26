@@ -11,7 +11,7 @@ hostname = 'ST8'
 context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
 context.load_verify_locations(cafile='cert.pem')
 
-HOST = "127.0.0.1"  # The server's hostname or IP address
+HOST = "172.20.10.7"  # The server's hostname or IP address
 PORT = 3030  # The port used by the server
 
 HMAC = "SHA256"
