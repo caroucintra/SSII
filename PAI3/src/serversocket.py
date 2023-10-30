@@ -5,7 +5,7 @@ import ssl
 from message import Message
 from response_message import Response_Message
 
-HOST = "172.20.10.7"  # Standard loopback interface address (localhost)
+HOST = "127.0.0.1"  # Standard loopback interface address (localhost)
 PORT = 3030  # Port to listen on (non-privileged ports are > 1023)
 
 HMAC = "SHA256"
