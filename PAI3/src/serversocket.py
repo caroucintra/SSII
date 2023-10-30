@@ -1,11 +1,12 @@
 # serversocket.py
-
 import socket, pickle, hmac, hashlib, logging, json
+from database import Database
 import ssl
 from message import Message
 from response_message import Response_Message
+from cryptography.fernet import Fernet
 
-HOST = "172.20.10.7"  # Standard loopback interface address (localhost)
+HOST = "127.0.0.1"  # Standard loopback interface address (localhost)
 PORT = 3030  # Port to listen on (non-privileged ports are > 1023)
 
 HMAC = "SHA256"
@@ -17,7 +18,10 @@ NONCES_FILE = "nonces.json"
 context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
 context.load_cert_chain('cert.pem', 'key.pem')
 
+fernet = Fernet(b'ofwfY0APCjL_kJ__aBTiPjyXGx6wl0q0v89SbOeX0o8=')
+
 def main():
+    db = Database()
     initialize_log()
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind((HOST, PORT))
@@ -41,6 +45,8 @@ def main():
                     # ini
                     if not all([is_correct_nonce, is_integrate]):
                         add_log_entry(m, is_correct_nonce, is_integrate)
+                    else:
+                        db.check_credentials(m.get_username(), hashlib.sha256(m.get_password().encode("utf-8")).hexdigest(), fernet.encrypt(m.get_message().encode("utf-8")))
                     response = Response_Message(is_integrate, is_correct_nonce, False)
 
                     data_string = pickle.dumps(response)

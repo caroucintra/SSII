@@ -39,8 +39,3 @@ class Database():
         user_id = self._cursor.execute(f"SELECT id from User WHERE (name = ? AND password = ?)", (username, password)).fetchone()
         self._cursor.execute("INSERT INTO Message VALUES (NULL, ?, ?)", (message, user_id[0]))
         self._conn.commit()
-
-
-db= Database()
-
-db.check_credentials("Hi", "pw", "this is message2")    
