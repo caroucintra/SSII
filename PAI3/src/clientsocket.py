@@ -1,6 +1,6 @@
 # clientsocket.py
 
-import socket, pickle, hmac, hashlib, datetime
+import socket, pickle, hmac, hashlib, datetime, concurrent.futures, threading, time
 import ssl
 from message import Message
 from response_message import Response_Message
@@ -16,6 +16,8 @@ PORT = 3030  # The port used by the server
 
 HMAC = "SHA256"
 KEY = 24  # ejemplo
+
+BOT_NUM = 1
 
 
 def setParams(user, pas, msj):
@@ -35,6 +37,14 @@ def setParams(user, pas, msj):
 
 
 def main():
+    #start_client_gui()
+    for i in range(300):
+        i = threading.Thread(target=start_client_bot)
+        i.start()
+
+
+
+def start_client_gui():
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         with context.wrap_socket(s, server_hostname=hostname) as ssock:
             ssock.connect((HOST, PORT))
@@ -43,7 +53,6 @@ def main():
                 if running == False:
                     break
                 setParams(gui.usuario_input, gui.contrasena_input, gui.mensaje_input)
-                
                 m = Message(usuario, contrasena, mensaje)
 
                 # eligir nonce y añadir al mensaje con add_nonce()
@@ -69,6 +78,30 @@ def main():
                     response_msg = response.print()
                     running = gui.showResults(response_msg)
 
+
+def start_client_bot():
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        with context.wrap_socket(s, server_hostname=hostname) as ssock:
+            ssock.connect((HOST, PORT))
+            while True:
+                m = Message("Jule", "Password", "Test Message")
+
+                # eligir nonce y añadir al mensaje con add_nonce()
+                m.add_nonce(create_unique_nonce())
+                print('nonce: '+m._nonce)
+                # crear mac con la función HMAC a base del mensaje con nonce (conseguido por la función string_entire_message()) y añadir lo al mensaje con add_mac(mac)
+                m.add_mac(create_mac(m.string_entire_message()))
+
+                data_string = pickle.dumps(m)
+                ssock.send(data_string)
+
+                data = ssock.recv(1024)
+                data_variable = pickle.loads(data)
+                if type(data_variable) == Response_Message:
+                    response = data_variable
+                    response.print()
+                time.sleep(30)
+                        
 
 # devuelve la fecha y hora actuales al milisegundo exacto
 def create_unique_nonce():

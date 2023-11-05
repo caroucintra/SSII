@@ -1,10 +1,8 @@
 # serversocket.py
-import socket, pickle, hmac, hashlib, logging, json
-from database import Database
+import socket, pickle, hmac, hashlib, logging, json, threading
 import ssl
 from message import Message
 from response_message import Response_Message
-from cryptography.fernet import Fernet
 
 HOST = "127.0.0.1"  # Standard loopback interface address (localhost)
 PORT = 3030  # Port to listen on (non-privileged ports are > 1023)
@@ -15,26 +13,39 @@ KEY = 24  # ejemplo
 #NONCES = []
 NONCES_FILE = "nonces.json"
 
+THREADS = 0
+
 context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
 context.load_cert_chain('cert.pem', 'key.pem')
 
-fernet = Fernet(b'ofwfY0APCjL_kJ__aBTiPjyXGx6wl0q0v89SbOeX0o8=')
+users = {
+    "Jule": "Password",
+    "Carou": "1234",
+    "Scotti": "Scotti1"
+}
 
 def main():
-    db = Database()
     initialize_log()
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind((HOST, PORT))
         s.listen()
         with context.wrap_socket(s, server_side=True) as ssock:
-            conn, addr = ssock.accept()
-            print(f"Connected by {addr}")
+            print(f'Server listening on tcp:{HOST}:{PORT}')
             while True:
+                conn, addr = ssock.accept()
+                # create new thread to handle the client connection
+                t = threading.Thread(target=handle, args=(conn, addr))
+                t.start()
+
+def handle(conn, addr):
+        global THREADS 
+        THREADS += 1
+        print(f"Thread-{THREADS} {addr} is now connected")
+        while True:
                 data = conn.recv(1024)
                 if not data:
                     continue
                 data_variable = pickle.loads(data)
-
                 if type(data_variable) == Message:
                     m = data_variable
                     m.print()
@@ -46,12 +57,20 @@ def main():
                     if not all([is_correct_nonce, is_integrate]):
                         add_log_entry(m, is_correct_nonce, is_integrate)
                     else:
-                        db.check_credentials(m.get_username(), hashlib.sha256(m.get_password().encode("utf-8")).hexdigest(), fernet.encrypt(m.get_message().encode("utf-8")))
-                    response = Response_Message(is_integrate, is_correct_nonce, False)
+                        is_auth = check_credentials(m.get_username(), m.get_password())
+                    response = Response_Message(is_integrate, is_correct_nonce, is_auth)
 
                     data_string = pickle.dumps(response)
                     conn.send(data_string)
+        conn.close()
 
+
+def check_credentials(username, password):
+    if username not in users.keys():
+        return False
+    if users[username] != password:
+        return False
+    return True
 
 def check_nonces(nonce):
     try:

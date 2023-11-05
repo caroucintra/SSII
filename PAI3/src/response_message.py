@@ -13,9 +13,9 @@ class Response_Message:
     def print(self):
         msg = ("Authentication worked: "
             + str(self._auth_check)
-            + "Message was stored: "
+            + "\nMessage was stored: "
             + str(self._auth_check)
-            + "Message is integrate: "
+            + "\nMessage is integrate: "
             + str(self._is_integrate)
             + "\nNonce is unique: "
             + str(self._is_correct_nonce))
