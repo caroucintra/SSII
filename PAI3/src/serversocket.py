@@ -1,6 +1,5 @@
 # serversocket.py
-
-import socket, pickle, hmac, hashlib, logging, json
+import socket, pickle, hmac, hashlib, logging, json, threading
 import ssl
 from message import Message
 from response_message import Response_Message
@@ -14,8 +13,16 @@ KEY = 24  # ejemplo
 #NONCES = []
 NONCES_FILE = "nonces.json"
 
+THREADS = 0
+
 context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
 context.load_cert_chain('cert.pem', 'key.pem')
+
+users = {
+    "Jule": "Password",
+    "Carou": "1234",
+    "Scotti": "Scotti1"
+}
 
 def main():
     initialize_log()
@@ -23,14 +30,22 @@ def main():
         s.bind((HOST, PORT))
         s.listen()
         with context.wrap_socket(s, server_side=True) as ssock:
-            conn, addr = ssock.accept()
-            print(f"Connected by {addr}")
+            print(f'Server listening on tcp:{HOST}:{PORT}')
             while True:
+                conn, addr = ssock.accept()
+                # create new thread to handle the client connection
+                t = threading.Thread(target=handle, args=(conn, addr))
+                t.start()
+
+def handle(conn, addr):
+        global THREADS 
+        THREADS += 1
+        print(f"Thread-{THREADS} {addr} is now connected")
+        while True:
                 data = conn.recv(1024)
                 if not data:
                     continue
                 data_variable = pickle.loads(data)
-
                 if type(data_variable) == Message:
                     m = data_variable
                     m.print()
@@ -41,11 +56,21 @@ def main():
                     # ini
                     if not all([is_correct_nonce, is_integrate]):
                         add_log_entry(m, is_correct_nonce, is_integrate)
-                    response = Response_Message(is_integrate, is_correct_nonce, False)
+                    else:
+                        is_auth = check_credentials(m.get_username(), m.get_password())
+                    response = Response_Message(is_integrate, is_correct_nonce, is_auth)
 
                     data_string = pickle.dumps(response)
                     conn.send(data_string)
+        conn.close()
 
+
+def check_credentials(username, password):
+    if username not in users.keys():
+        return False
+    if users[username] != password:
+        return False
+    return True
 
 def check_nonces(nonce):
     try:
