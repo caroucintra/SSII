@@ -37,11 +37,20 @@ def setParams(user, pas, msj):
 
 
 def main():
-    #start_client_gui()
-    for i in range(300):
-        i = threading.Thread(target=start_client_bot)
-        i.start()
 
+    #Para un cliente normal, utilice el siguiente código
+    #start_client_gui()
+
+    #Para para testar 300 clientes, utilice el siguiente código
+    create_threading(300)
+
+def create_threading(x):
+    for i in range(x):
+        try:
+            i = threading.Thread(target=start_client_bot)
+            i.start()
+        except KeyboardInterrupt:
+            i.join()
 
 
 def start_client_gui():
@@ -83,7 +92,8 @@ def start_client_bot():
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         with context.wrap_socket(s, server_hostname=hostname) as ssock:
             ssock.connect((HOST, PORT))
-            while True:
+            time.sleep(30)
+            """while True:
                 m = Message("Jule", "Password", "Test Message")
 
                 # eligir nonce y añadir al mensaje con add_nonce()
@@ -99,8 +109,8 @@ def start_client_bot():
                 data_variable = pickle.loads(data)
                 if type(data_variable) == Response_Message:
                     response = data_variable
-                    response.print()
-                time.sleep(30)
+                    response.print() 
+                time.sleep(30)"""
                         
 
 # devuelve la fecha y hora actuales al milisegundo exacto
