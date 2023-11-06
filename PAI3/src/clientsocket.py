@@ -20,6 +20,15 @@ KEY = 24  # ejemplo
 BOT_NUM = 1
 
 
+def main():
+
+    #Para un cliente normal, utilice el siguiente código
+    start_client_gui()
+
+    #Para para testar 300 clientes, utilice el siguiente código
+    #create_threading(300)
+
+
 def setParams(user, pas, msj):
     global usuario, contrasena, mensaje
     if (user != ""):
@@ -36,18 +45,10 @@ def setParams(user, pas, msj):
         mensaje = '0'
 
 
-def main():
-
-    #Para un cliente normal, utilice el siguiente código
-    #start_client_gui()
-
-    #Para para testar 300 clientes, utilice el siguiente código
-    create_threading(300)
-
 def create_threading(x):
-    for i in range(x):
+    for j in range(x):
+        i = threading.Thread(target=start_client_bot)
         try:
-            i = threading.Thread(target=start_client_bot)
             i.start()
         except KeyboardInterrupt:
             i.join()

@@ -56,8 +56,7 @@ def handle(conn, addr):
                     # ini
                     if not all([is_correct_nonce, is_integrate]):
                         add_log_entry(m, is_correct_nonce, is_integrate)
-                    else:
-                        is_auth = check_credentials(m.get_username(), m.get_password())
+                    is_auth = check_credentials(m.get_username(), m.get_password())
                     response = Response_Message(is_integrate, is_correct_nonce, is_auth)
 
                     data_string = pickle.dumps(response)
