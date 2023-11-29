@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,12 +40,12 @@ public class MainActivity extends AppCompatActivity {
     // Creación de un cuadro de dialogo para confirmar pedido
     private void showDialog() throws Resources.NotFoundException {
         //CheckBox sabanas = (CheckBox) findViewById(R.id.checkBox_camas);
-/*
-        if (!sabanas.isChecked()) {
+
+        //if (!sabanas.isChecked()) {
             // Mostramos un mensaje emergente;
-            Toast.makeText(getApplicationContext(), "Selecciona al menos un elemento", Toast.LENGTH_SHORT).show();
-        } else {
-            new AlertDialog.Builder(this)
+            //Toast.makeText(getApplicationContext(), "Selecciona al menos un elemento", Toast.LENGTH_SHORT).show();}
+
+        new AlertDialog.Builder(this)
                     .setTitle("Enviar")
                     .setMessage("Se va a proceder al envio")
                     .setIcon(android.R.drawable.ic_dialog_alert)
@@ -54,6 +55,10 @@ public class MainActivity extends AppCompatActivity {
                                 public void onClick(DialogInterface dialog, int whichButton) {
 
                                     // 1. Extraer los datos de la vista
+                                    String camasCantidad = extractDataFromEditText(R.id.box_camas);
+                                    String mesasCantidad = extractDataFromEditText(R.id.box_mesas);
+                                    String sillasCantidad = extractDataFromEditText(R.id.box_sillas);
+                                    String sillonesCantidad = extractDataFromEditText(R.id.box_sillones);
 
                                     // 2. Firmar los datos
 
@@ -73,8 +78,10 @@ public class MainActivity extends AppCompatActivity {
                             show();
         }
 
- */
+    // Función para extraer los datos de la vista
+    private String extractDataFromEditText(int editTextId) {
+        EditText editText = findViewById(editTextId);
+        return editText.getText().toString();
     }
-
 
 }
