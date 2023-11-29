@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -59,6 +58,19 @@ public class MainActivity extends AppCompatActivity {
                                     String mesasCantidad = extractDataFromEditText(R.id.box_mesas);
                                     String sillasCantidad = extractDataFromEditText(R.id.box_sillas);
                                     String sillonesCantidad = extractDataFromEditText(R.id.box_sillones);
+                                    String clientId = extractDataFromEditText(R.id.box_nr_cliente);
+
+                                    // Comprobar las entradas
+
+                                    // Crea objeto de Message con los informaciones
+                                    Message message = new Message(
+                                            Integer.parseInt(camasCantidad),
+                                            Integer.parseInt(mesasCantidad),
+                                            Integer.parseInt(sillasCantidad),
+                                            Integer.parseInt(sillonesCantidad),
+                                            Integer.parseInt(clientId)
+                                    );
+
 
                                     // 2. Firmar los datos
 
