@@ -38,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
 
     // Creación de un cuadro de dialogo para confirmar pedido
     private void showDialog() throws Resources.NotFoundException {
-        CheckBox sabanas = (CheckBox) findViewById(R.id.checkBox_sabanas);
-
+        //CheckBox sabanas = (CheckBox) findViewById(R.id.checkBox_camas);
+/*
         if (!sabanas.isChecked()) {
             // Mostramos un mensaje emergente;
             Toast.makeText(getApplicationContext(), "Selecciona al menos un elemento", Toast.LENGTH_SHORT).show();
@@ -72,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
 
                             show();
         }
+
+ */
     }
 
 
