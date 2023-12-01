@@ -30,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     private PrivateKey privateKey;
     private PublicKey publicKey;
 
+    private ObjectOutputStream toServer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,11 +67,11 @@ public class MainActivity extends AppCompatActivity {
     protected void startClient() {
         Log.d("1","Client started...");
         try {
-            Socket s = new Socket("", 3030);
-            DataOutputStream dout = new DataOutputStream(s.getOutputStream());
-            dout.writeUTF("Hello Server");
-            dout.flush();
-            dout.close();
+            Socket s = new Socket("192.168.1.141", 3030);
+            this.toServer = new ObjectOutputStream(s.getOutputStream());
+            this.toServer.writeObject(new Message(1,1,1,1,1));
+            this.toServer.reset();
+            this.toServer.close();
             s.close();
         } catch(Exception e) {
             System.out.println(e);
@@ -125,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                                     // 2. Firmar los datos
-                                    // signData(message);
+                                    signData(message);
 
 
                                     // 3. Enviar los datos
