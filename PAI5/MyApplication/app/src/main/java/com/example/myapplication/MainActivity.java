@@ -10,17 +10,27 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.Signature;
 
 public class MainActivity extends AppCompatActivity {
 
     // Setup Server information
     protected static String server = "192.168.1.133";
     protected static int port = 7070;
+    private PrivateKey privateKey;
+    private PublicKey publicKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Generar llaves
+        generateKeyPair();
 
         // Capturamos el boton de Enviar
         View button = findViewById(R.id.button_send);
@@ -34,6 +44,18 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private void generateKeyPair() {
+        try {
+            KeyPairGenerator kgen = KeyPairGenerator.getInstance("RSA");
+            kgen.initialize(2048);
+            KeyPair keys = kgen.generateKeyPair();
+            privateKey = keys.getPrivate();
+            publicKey = keys.getPublic();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // Creación de un cuadro de dialogo para confirmar pedido
@@ -73,21 +95,16 @@ public class MainActivity extends AppCompatActivity {
 
 
                                     // 2. Firmar los datos
+                                    signData(message);
+
 
                                     // 3. Enviar los datos
 
                                     Toast.makeText(MainActivity.this, "Petición enviada correctamente", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-
-                    )
-                    .
-
-                            setNegativeButton(android.R.string.no, null)
-
-                    .
-
-                            show();
+                                        }
+                            })
+                    .setNegativeButton(android.R.string.no, null)
+                    .show();
         }
 
     // Función para extraer los datos de la vista
@@ -96,4 +113,20 @@ public class MainActivity extends AppCompatActivity {
         return editText.getText().toString();
     }
 
+    private void signData(Message message) {
+        try {
+            Signature sg = Signature.getInstance("SHA256withRSA");
+            sg.initSign(privateKey);
+
+            // convertir los datos en  in bytes
+            byte[] dataBytes = message.toString().getBytes("UTF-8");
+
+            sg.update(dataBytes);
+
+            // generar firma
+            byte[] firma = sg.sign();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
