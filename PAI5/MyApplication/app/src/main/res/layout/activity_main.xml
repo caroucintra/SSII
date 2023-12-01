@@ -1,40 +1,196 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/box_id"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-     tools:context="com.example.myapplication.MainActivity">
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Hospital Warehouse APP"
-        tools:text="Hospital Warehouse APP" />
+    tools:context="com.example.myapplication.MainActivity">
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Enviar"
         android:id="@+id/button_send"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="35dp"
-        android:layout_marginEnd="35dp"
-        android:layout_marginBottom="35dp" />
-
-    <CheckBox
-        android:id="@+id/checkBox_sabanas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/textView"
-        android:layout_marginLeft="21dp"
-        android:layout_marginStart="21dp"
-        android:layout_marginTop="41dp"
-        android:checked="false"
-        android:text="Sábanas" />
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="35dp"
+        android:layout_marginRight="35dp"
+        android:layout_marginBottom="35dp"
+        android:text="Enviar" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:text="Petición de material"
+        android:textColor="#000000"
+        android:textSize="20sp" />
+
+    <LinearLayout
+        android:id="@+id/camas"
+        android:layout_width="match_parent"
+        android:layout_height="59dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginLeft="35dp"
+        android:layout_marginTop="75dp"
+        android:orientation="horizontal">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/box_camas"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            tools:layout_height="40dp"
+            tools:layout_marginLeft="40dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/box_camas_edit"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="num" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <EditText
+            android:id="@+id/text_camas"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:ems="10"
+            android:inputType="text"
+            android:text="Camas" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/mesas"
+        android:layout_width="match_parent"
+        android:layout_height="59dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginLeft="35dp"
+        android:layout_marginTop="135dp"
+        android:orientation="horizontal">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/box_mesas"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            tools:layout_height="40dp"
+            tools:layout_marginLeft="40dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/box_mesas_edit"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="num" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <EditText
+            android:id="@+id/text_mesas"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:ems="10"
+            android:inputType="text"
+            android:text="Mesas" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/sillas"
+        android:layout_width="match_parent"
+        android:layout_height="59dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginLeft="35dp"
+        android:layout_marginTop="195dp"
+        android:orientation="horizontal">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/box_sillas"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            tools:layout_height="40dp"
+            tools:layout_marginLeft="40dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/box_sillas_edit"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="num" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <EditText
+            android:id="@+id/text_sillas"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:ems="10"
+            android:inputType="text"
+            android:text="Sillas" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/sillones"
+        android:layout_width="match_parent"
+        android:layout_height="59dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginLeft="35dp"
+        android:layout_marginTop="255dp"
+        android:orientation="horizontal">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/box_sillones"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            tools:layout_height="40dp"
+            tools:layout_marginLeft="40dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/box_sillones_edit"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="num" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <EditText
+            android:id="@+id/text_sillones"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:ems="10"
+            android:inputType="text"
+            android:text="Sillones" />
+
+    </LinearLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/box_nr_cliente"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="35dp"
+        android:layout_marginLeft="35dp"
+        android:layout_marginTop="320dp"
+        tools:layout_centerHorizontal="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/box_nr_cliente_edit"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Número del cliente" />
+    </com.google.android.material.textfield.TextInputLayout>
 
 </RelativeLayout>
