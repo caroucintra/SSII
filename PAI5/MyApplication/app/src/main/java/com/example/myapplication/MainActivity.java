@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -19,10 +20,12 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Signature;
 
+import android.os.AsyncTask;
+
 public class MainActivity extends AppCompatActivity {
 
     // Setup Server information
-    protected static String server = "192.168.1.133";
+    protected static String server = "10.0.2.2";
     protected static int port = 7070;
     private PrivateKey privateKey;
     private PublicKey publicKey;
@@ -45,20 +48,32 @@ public class MainActivity extends AppCompatActivity {
                 showDialog();
             }
         });
-        startClient();
+
+        // client
+        new StartClientTask().execute();
 
     }
 
+    private class StartClientTask extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            startClient();
+            return null;
+        }
+    }
+
     protected void startClient() {
-        System.out.println("Client started...");
+        Log.d("1","Client started...");
         try {
-            Socket s = new Socket("localhost", 6666);
+            Socket s = new Socket("10.0.2.2", 3030);
             DataOutputStream dout = new DataOutputStream(s.getOutputStream());
             dout.writeUTF("Hello Server");
             dout.flush();
             dout.close();
             s.close();
-        } catch(Exception e){System.out.println(e);}
+        } catch(Exception e) {
+            System.out.println(e);
+        }
     }
 
     private void generateKeyPair() {
@@ -110,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                                     // 2. Firmar los datos
-                                    signData(message);
+                                    // signData(message);
 
 
                                     // 3. Enviar los datos

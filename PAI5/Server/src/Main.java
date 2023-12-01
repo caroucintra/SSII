@@ -6,7 +6,7 @@ public class Main {
 
         System.out.println("Server started...\nWaiting for connection...");
         try{
-            ServerSocket ss=new ServerSocket(6666);
+            ServerSocket ss=new ServerSocket(3030);
             Socket s=ss.accept();//establishes connection
             DataInputStream dis=new DataInputStream(s.getInputStream());
             String  str=(String)dis.readUTF();
