@@ -10,6 +10,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.*;
+import java.net.*;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,8 +35,20 @@ public class MainActivity extends AppCompatActivity {
                 showDialog();
             }
         });
+        startClient();
 
+    }
 
+    protected void startClient() {
+        System.out.println("Client started...");
+        try {
+            Socket s = new Socket("localhost", 6666);
+            DataOutputStream dout = new DataOutputStream(s.getOutputStream());
+            dout.writeUTF("Hello Server");
+            dout.flush();
+            dout.close();
+            s.close();
+        } catch(Exception e){System.out.println(e);}
     }
 
     // Creación de un cuadro de dialogo para confirmar pedido
