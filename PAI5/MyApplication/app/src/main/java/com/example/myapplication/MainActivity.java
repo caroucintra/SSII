@@ -51,8 +51,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        new StartServerTask().execute();
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         // client
         new StartClientTask().execute();
+
 
     }
 
@@ -64,10 +71,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private class StartServerTask extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            Server.startServer();
+            return null;
+        }
+    }
+
     protected void startClient() {
         Log.d("1","Client started...");
         try {
-            Socket s = new Socket("192.168.1.141", 3030);
+            Socket s = new Socket("10.0.2.2", 3030);
             this.toServer = new ObjectOutputStream(s.getOutputStream());
             this.toServer.writeObject(new Message(1,1,1,1,1));
             this.toServer.reset();

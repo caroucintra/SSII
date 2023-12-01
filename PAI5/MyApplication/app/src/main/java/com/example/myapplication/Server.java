@@ -1,11 +1,13 @@
+package com.example.myapplication;
+
 import java.net.*;
 import java.io.*;
 
-public class Main {
+public class Server {
     private static String clientIpAddress = "127.0.0.1";
-    private static ObjectInputStream fromClient; 
+    private static ObjectInputStream fromClient;
 
-    public static void main(String[] args) {
+    public static void startServer() {
 
         System.out.println("Server started...\nWaiting for connection...");
         try{
