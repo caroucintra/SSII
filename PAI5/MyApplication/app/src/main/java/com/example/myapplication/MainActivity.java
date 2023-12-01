@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
     protected void startClient() {
         Log.d("1","Client started...");
         try {
-            Socket s = new Socket("10.0.2.2", 3030);
+            Socket s = new Socket("", 3030);
             DataOutputStream dout = new DataOutputStream(s.getOutputStream());
             dout.writeUTF("Hello Server");
             dout.flush();
