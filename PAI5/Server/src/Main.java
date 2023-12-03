@@ -17,6 +17,7 @@ public class Main {
             Socket s=ss.accept();//establishes connection
             System.out.println("Connection established!");
             fromClient = new BufferedReader(new InputStreamReader(s.getInputStream()));
+            System.out.println(fromClient.toString());
             String message = fromClient.readLine();
             System.out.println(message);
             ss.close();

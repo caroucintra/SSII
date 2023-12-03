@@ -116,6 +116,29 @@ public class MainActivity extends AppCompatActivity {
                                     String clientId = extractDataFromEditText(R.id.box_nr_cliente);
 
                                     // Comprobar las entradas
+                                    try {
+                                        int camasInt = Integer.parseInt(camasCantidad);
+                                        int mesasInt = Integer.parseInt(mesasCantidad);
+                                        int sillasInt = Integer.parseInt(sillasCantidad);
+                                        int sillonesInt = Integer.parseInt(sillonesCantidad);
+                                        Integer.parseInt(clientId);
+                                        if (camasInt > 300 || camasInt < 0 ||
+                                                mesasInt > 300 || mesasInt < 0 ||
+                                                sillasInt > 300 || sillasInt < 0 ||
+                                                sillonesInt > 300 || sillonesInt < 0
+                                        ) {
+                                            Toast.makeText(MainActivity.this, "Valor numérico no es válido", Toast.LENGTH_SHORT).show();
+                                            return;
+                                        }
+                                        System.out.println(
+                                                "pleeaseeee"
+                                        );
+                                    }
+                                    catch (NumberFormatException n){
+                                        Toast.makeText(MainActivity.this, "Valor numérico no es válido", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+
 
                                     // Crea objeto de Message con los informaciones
                                     Message message = new Message(
@@ -125,18 +148,26 @@ public class MainActivity extends AppCompatActivity {
                                             Integer.parseInt(sillonesCantidad),
                                             Integer.parseInt(clientId)
                                     );
+                                    System.out.println(
+                                            "creates message"
+                                    );
 
                                     // 2. Firmar los datos
                                     String rawMessage = message.getMessage();
                                     String encodedSignedMessage = signData(message);
                                     String finalMessage = rawMessage + ";" + encodedSignedMessage;
-
+                                    System.out.println(
+                                            "signs message"
+                                    );
 
                                     // 3. Enviar los datos
 
                                     MainActivity.this.toServer.print("hellooooo");
                                     MainActivity.this.toServer.flush();
                                     //MainActivity.this.toServer.close();
+                                    System.out.println(
+                                            "sends hello"
+                                    );
 
                                     Toast.makeText(MainActivity.this, "Petición enviada correctamente", Toast.LENGTH_SHORT).show();
                                         }
