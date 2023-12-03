@@ -13,6 +13,9 @@ public class Main {
     private static PublicKey publicKey;    
     private static byte[] signedMessage;
     private static byte[] rawMessage;
+    private static String idEmpleado;
+    private static String peticion;
+
 
 
     private static String publicKeyString = "MIIBITANBgkqhkiG9w0BAQEFAAOCAQ4AMIIBCQKCAQBh8jFNbxObv/N07An2LJnI\n" + 
@@ -57,6 +60,12 @@ public class Main {
         rawMessage = parsed[0].getBytes();
         signedMessage = Base64.getDecoder().decode(parsed[1]);
 
+        String[] parsed2 = parsed[1].split(",");
+        idEmpleado = parsed2[4];
+        peticion = parsed2[0] + " camas," + 
+        parsed2[1] + " mesas," + 
+        parsed[2] + " sillas," + 
+        parsed[3] + " sillones";
     }
 
 
