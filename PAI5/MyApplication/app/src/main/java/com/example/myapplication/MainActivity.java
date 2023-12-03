@@ -14,10 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.io.*;
 import java.net.*;
 
-import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Signature;
@@ -74,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Generar llaves
-        generateKeyPair();
+        generatePrivateKey();
 
         // Capturamos el boton de Enviar
         View button = findViewById(R.id.button_send);
@@ -127,20 +124,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void generateKeyPair() {
+    private void generatePrivateKey() {
         try {
-            /*
-            KeyPairGenerator kgen = KeyPairGenerator.getInstance("RSA");
-            kgen.initialize(2048);
-            KeyPair keys = kgen.generateKeyPair();
-            byte[] keyBytes = new byte[0];
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                keyBytes = Base64.getDecoder().decode(privKeyString.getBytes(StandardCharsets.UTF_8));
-            }
-            PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(keyBytes);
-            KeyFactory fact = KeyFactory.getInstance("RSA");
-            PrivateKey privateKey = fact.generatePrivate(keySpec);
-            */
 
             StringBuilder pkcs8Lines = new StringBuilder();
             BufferedReader rdr = new BufferedReader(new StringReader(privKeyString));
@@ -167,8 +152,6 @@ public class MainActivity extends AppCompatActivity {
 
             privateKey = kf.generatePrivate(keySpec);
 
-            //privateKey = keys.getPrivate();
-            //publicKey = keys.getPublic();
         } catch (Exception e) {
             e.printStackTrace();
         }
