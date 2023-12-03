@@ -5,7 +5,7 @@ import java.io.*;
 
 public class Main {
     private static String clientIpAddress = "127.0.0.1";
-    private static ObjectInputStream fromClient; 
+    private static BufferedReader fromClient; 
 
     public static void main(String[] args) {
 
@@ -16,9 +16,9 @@ public class Main {
             ss.bind(serverAddress);
             Socket s=ss.accept();//establishes connection
             System.out.println("Connection established!");
-            fromClient = new ObjectInputStream(s.getInputStream());
-            Message message = (Message) fromClient.readObject();
-            message.print();
+            fromClient = new BufferedReader(new InputStreamReader(s.getInputStream()));
+            String message = fromClient.readLine();
+            System.out.println(message);
             ss.close();
         }catch(Exception e){System.out.println(e);}
     }

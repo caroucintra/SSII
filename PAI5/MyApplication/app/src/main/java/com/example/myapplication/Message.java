@@ -17,6 +17,10 @@ public class Message implements Serializable{
         this.id = id;
     }
 
+    public String getMessage(){
+        return camas + "," + mesas + "," + sillas + "," + sillones + "," + id;
+    }
+
     public int getCamas() {
         return camas;
     }

@@ -19,6 +19,7 @@ import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Signature;
+import java.util.Base64;
 
 import android.os.AsyncTask;
 
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private PrivateKey privateKey;
     private PublicKey publicKey;
 
-    private ObjectOutputStream toServer;
+    private PrintWriter toServer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Generar llaves
         generateKeyPair();
-        signData(new Message(1,1,1,1,1));
 
         // Capturamos el boton de Enviar
         View button = findViewById(R.id.button_send);
@@ -72,11 +72,8 @@ public class MainActivity extends AppCompatActivity {
         Log.i("1","Client started...");
         try {
             Socket s = new Socket("10.0.2.2", 3030);
-            this.toServer = new ObjectOutputStream(s.getOutputStream());
-            this.toServer.writeObject(new Message(1,1,1,1,1));
-            this.toServer.reset();
-            this.toServer.close();
-            s.close();
+            this.toServer = new PrintWriter(s.getOutputStream());
+
         } catch(Exception e) {
             System.out.println(e);
         }
@@ -129,12 +126,17 @@ public class MainActivity extends AppCompatActivity {
                                             Integer.parseInt(clientId)
                                     );
 
-
                                     // 2. Firmar los datos
-                                    signData(message);
+                                    String rawMessage = message.getMessage();
+                                    String encodedSignedMessage = signData(message);
+                                    String finalMessage = rawMessage + ";" + encodedSignedMessage;
 
 
                                     // 3. Enviar los datos
+
+                                    MainActivity.this.toServer.print("hellooooo");
+                                    MainActivity.this.toServer.flush();
+                                    //MainActivity.this.toServer.close();
 
                                     Toast.makeText(MainActivity.this, "Petición enviada correctamente", Toast.LENGTH_SHORT).show();
                                         }
@@ -149,20 +151,28 @@ public class MainActivity extends AppCompatActivity {
         return editText.getText().toString();
     }
 
-    private void signData(Message message) {
+    private String signData(Message message) {
         try {
             Signature sg = Signature.getInstance("SHA256withRSA");
             sg.initSign(privateKey);
 
             // convertir los datos en  in bytes
-            byte[] dataBytes = message.toString().getBytes("UTF-8");
+            System.out.println(message.getMessage());
+            byte[] dataBytes = message.getMessage().getBytes("UTF-8");
 
             sg.update(dataBytes);
 
             // generar firma
             byte[] firma = sg.sign();
+            byte[] encodedBytes = new byte[0];
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                encodedBytes = Base64.getEncoder().encode(firma);
+            }
+            String encodedString = new String(encodedBytes);
+            return encodedString;
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 }
