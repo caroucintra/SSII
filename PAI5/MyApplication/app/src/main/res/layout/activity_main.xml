@@ -38,31 +38,26 @@
         android:layout_marginTop="75dp"
         android:orientation="horizontal">
 
-        <com.google.android.material.textfield.TextInputLayout
+        <EditText
             android:id="@+id/box_camas"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginLeft="40dp"
             android:layout_marginTop="10dp"
-            tools:layout_height="40dp"
-            tools:layout_marginLeft="40dp">
+            android:inputType="text" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/box_camas_edit"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="num" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <EditText
+        <TextView
             android:id="@+id/text_camas"
-            android:layout_width="80dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
-            android:ems="10"
-            android:inputType="text"
-            android:text="Camas" />
+            android:layout_marginTop="10dp"
+            android:text="Camas"
+            android:textColor="#000000"
+            android:textSize="20sp" />
 
     </LinearLayout>
 
@@ -75,31 +70,26 @@
         android:layout_marginTop="135dp"
         android:orientation="horizontal">
 
-        <com.google.android.material.textfield.TextInputLayout
+        <EditText
             android:id="@+id/box_mesas"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginLeft="40dp"
             android:layout_marginTop="10dp"
-            tools:layout_height="40dp"
-            tools:layout_marginLeft="40dp">
+            android:inputType="text" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/box_mesas_edit"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="num" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <EditText
+        <TextView
             android:id="@+id/text_mesas"
-            android:layout_width="80dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
-            android:ems="10"
-            android:inputType="text"
-            android:text="Mesas" />
+            android:layout_marginTop="10dp"
+            android:text="Mesas"
+            android:textColor="#000000"
+            android:textSize="20sp" />
 
     </LinearLayout>
 
@@ -112,31 +102,26 @@
         android:layout_marginTop="195dp"
         android:orientation="horizontal">
 
-        <com.google.android.material.textfield.TextInputLayout
+        <EditText
             android:id="@+id/box_sillas"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginLeft="40dp"
             android:layout_marginTop="10dp"
-            tools:layout_height="40dp"
-            tools:layout_marginLeft="40dp">
+            android:inputType="text" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/box_sillas_edit"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="num" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <EditText
+        <TextView
             android:id="@+id/text_sillas"
-            android:layout_width="80dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
-            android:ems="10"
-            android:inputType="text"
-            android:text="Sillas" />
+            android:layout_marginTop="10dp"
+            android:text="Sillas"
+            android:textColor="#000000"
+            android:textSize="20sp" />
 
     </LinearLayout>
 
@@ -149,48 +134,48 @@
         android:layout_marginTop="255dp"
         android:orientation="horizontal">
 
-        <com.google.android.material.textfield.TextInputLayout
+        <EditText
             android:id="@+id/box_sillones"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginLeft="40dp"
             android:layout_marginTop="10dp"
-            tools:layout_height="40dp"
-            tools:layout_marginLeft="40dp">
+            android:inputType="text" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/box_sillones_edit"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="num" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <EditText
+        <TextView
             android:id="@+id/text_sillones"
-            android:layout_width="80dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
-            android:ems="10"
-            android:inputType="text"
-            android:text="Sillones" />
+            android:layout_marginTop="10dp"
+            android:text="Sillones"
+            android:textColor="#000000"
+            android:textSize="20sp" />
 
     </LinearLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/box_nr_cliente"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/sillones"
+        android:layout_width="match_parent"
+        android:layout_height="59dp"
         android:layout_marginStart="35dp"
         android:layout_marginLeft="35dp"
-        android:layout_marginTop="320dp"
-        tools:layout_centerHorizontal="true">
+        android:layout_marginTop="315dp"
+        android:orientation="horizontal">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/box_nr_cliente_edit"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="Número del cliente" />
-    </com.google.android.material.textfield.TextInputLayout>
+        <EditText
+            android:id="@+id/box_nr_cliente"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="10dp"
+            android:hint="Número del empleado"
+            android:inputType="text" />
+
+    </LinearLayout>
 
 </RelativeLayout>

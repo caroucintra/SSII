@@ -17,10 +17,13 @@ public class Main {
 
             fromClient = new BufferedReader(new InputStreamReader(s.getInputStream()));
 
-            while (true) {
-                String message = fromClient.readLine();
-                System.out.println(message);
+            while (true){
+                String message;
+                while ((message = fromClient.readLine()) != null) {
+                    System.out.println(message);
+                }
             }
+            
             // ss.close();
         } catch (Exception e) {
             System.out.println(e);

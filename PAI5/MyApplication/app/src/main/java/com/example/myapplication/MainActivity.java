@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
 
     private PrintWriter toServer;
 
+    private String finalMessage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -66,6 +68,22 @@ public class MainActivity extends AppCompatActivity {
             startClient();
             return null;
         }
+    }
+    private class StartMessageTask extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            sendStringToServer();
+            return null;
+        }
+    }
+
+    private void sendStringToServer(){
+        Log.i("6","sending string");
+        MainActivity.this.toServer.print(this.finalMessage);
+        MainActivity.this.toServer.flush();
+        Log.i("7","sent string");
+
+        //MainActivity.this.toServer.close();
     }
 
     protected void startClient() {
@@ -130,9 +148,7 @@ public class MainActivity extends AppCompatActivity {
                                             Toast.makeText(MainActivity.this, "Valor numérico no es válido", Toast.LENGTH_SHORT).show();
                                             return;
                                         }
-                                        System.out.println(
-                                                "pleeaseeee"
-                                        );
+                                        Log.i("2", "parsing ints");
                                     }
                                     catch (NumberFormatException n){
                                         Toast.makeText(MainActivity.this, "Valor numérico no es válido", Toast.LENGTH_SHORT).show();
@@ -148,26 +164,25 @@ public class MainActivity extends AppCompatActivity {
                                             Integer.parseInt(sillonesCantidad),
                                             Integer.parseInt(clientId)
                                     );
-                                    System.out.println(
-                                            "creates message"
-                                    );
+                                    Log.i("3", "creates messages");
+
+
 
                                     // 2. Firmar los datos
                                     String rawMessage = message.getMessage();
                                     String encodedSignedMessage = signData(message);
-                                    String finalMessage = rawMessage + ";" + encodedSignedMessage;
-                                    System.out.println(
-                                            "signs message"
-                                    );
+                                    finalMessage = rawMessage + ";" + encodedSignedMessage + "\n";
+
+                                    Log.i("4", "signs messages");
+
 
                                     // 3. Enviar los datos
 
-                                    MainActivity.this.toServer.print("hellooooo");
-                                    MainActivity.this.toServer.flush();
-                                    //MainActivity.this.toServer.close();
-                                    System.out.println(
-                                            "sends hello"
-                                    );
+                                    //finalMessage = "helloooo\n";
+                                    new StartMessageTask().execute();
+
+                                    Log.i("5", "sends hello");
+
 
                                     Toast.makeText(MainActivity.this, "Petición enviada correctamente", Toast.LENGTH_SHORT).show();
                                         }
