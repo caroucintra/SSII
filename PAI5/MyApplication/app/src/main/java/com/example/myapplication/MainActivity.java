@@ -61,16 +61,20 @@ public class MainActivity extends AppCompatActivity {
     private PrintWriter toServer;
 
     private String finalMessage;
+    private int mesasInt;
+    private int camasInt;
+    private int sillasInt;
+    private int sillonesInt;
+    private int clientID;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        System.out.println("Test");
-        Log.i("Test", "Test");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Generar llaves
+        // Generar clave
         generatePrivateKey();
 
         // Capturamos el boton de Enviar
@@ -80,7 +84,9 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDialog();
+                if (!extractData()){
+                    showDialog();
+                }
             }
         });
 
@@ -105,10 +111,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void sendStringToServer(){
-        Log.i("6","sending string");
         MainActivity.this.toServer.print(this.finalMessage);
         MainActivity.this.toServer.flush();
-        Log.i("7","sent string");
 
         //MainActivity.this.toServer.close();
     }
@@ -157,8 +161,46 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+
     // Creación de un cuadro de dialogo para confirmar pedido
     private void showDialog() throws Resources.NotFoundException {
+        new AlertDialog.Builder(this)
+            .setTitle("Enviar")
+            .setMessage("Se va a proceder al envio")
+            .setIcon(android.R.drawable.checkbox_on_background)
+            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                // Catch ok button and send information
+                public void onClick(DialogInterface dialog, int whichButton) {
+
+                    // Crea objeto de Message con los informaciones
+                    Message message = new Message(camasInt, mesasInt, sillasInt, sillonesInt, clientID);
+                    Log.i("3", "creates messages");
+
+                    // 2. Firmar los datos
+                    String rawMessage = message.getMessage();
+                    String encodedSignedMessage = signData(message);
+                    finalMessage = rawMessage + ";" + encodedSignedMessage + "\n";
+
+                    Log.i("4", "signs messages");
+
+                    // 3. Enviar los datos
+
+                    //finalMessage = "helloooo\n";
+                    new StartMessageTask().execute();
+
+                    Log.i("5", "sends hello");
+
+
+                    Toast.makeText(MainActivity.this, "Petición enviada correctamente", Toast.LENGTH_LONG).show();
+                }
+            })
+            .setNegativeButton(android.R.string.no, null)
+            .show();
+        }
+
+    // Función para extraer los datos de la vista
+    private boolean extractData() {
         boolean flag = false;
 
         // 1. Extraer los datos de la vista
@@ -170,11 +212,11 @@ public class MainActivity extends AppCompatActivity {
 
         // Comprobar las entradas
         try {
-            int camasInt = Integer.parseInt(camasCantidad);
-            int mesasInt = Integer.parseInt(mesasCantidad);
-            int sillasInt = Integer.parseInt(sillasCantidad);
-            int sillonesInt = Integer.parseInt(sillonesCantidad);
-            Integer.parseInt(clientId);
+            camasInt = Integer.parseInt(camasCantidad);
+            mesasInt = Integer.parseInt(mesasCantidad);
+            sillasInt = Integer.parseInt(sillasCantidad);
+            sillonesInt = Integer.parseInt(sillonesCantidad);
+            clientID = Integer.parseInt(clientId);
             if (camasInt > 300 || camasInt < 0 ||
                     mesasInt > 300 || mesasInt < 0 ||
                     sillasInt > 300 || sillasInt < 0 ||
@@ -196,60 +238,18 @@ public class MainActivity extends AppCompatActivity {
         catch (NumberFormatException n){
             flag = true;
             new AlertDialog.Builder(this)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("Error")
-                .setMessage("Valor numérico no es válido")
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                    }
-            })
-                .show();
-        }
-        if (flag) return;
-
-        new AlertDialog.Builder(this)
-                    .setTitle("Enviar")
-                    .setMessage("Se va a proceder al envio")
-                    .setIcon(android.R.drawable.checkbox_on_background)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("Error")
+                    .setMessage("Valor numérico no es válido")
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-
-                                // Catch ok button and send information
-                                public void onClick(DialogInterface dialog, int whichButton) {
-
-                                    // Crea objeto de Message con los informaciones
-                                    Message message = new Message(
-                                            Integer.parseInt(camasCantidad),
-                                            Integer.parseInt(mesasCantidad),
-                                            Integer.parseInt(sillasCantidad),
-                                            Integer.parseInt(sillonesCantidad),
-                                            Integer.parseInt(clientId)
-                                    );
-                                    Log.i("3", "creates messages");
-
-                                    // 2. Firmar los datos
-                                    String rawMessage = message.getMessage();
-                                    String encodedSignedMessage = signData(message);
-                                    finalMessage = rawMessage + ";" + encodedSignedMessage + "\n";
-
-                                    Log.i("4", "signs messages");
-
-
-                                    // 3. Enviar los datos
-
-                                    //finalMessage = "helloooo\n";
-                                    new StartMessageTask().execute();
-
-                                    Log.i("5", "sends hello");
-
-
-                                    Toast.makeText(MainActivity.this, "Petición enviada correctamente", Toast.LENGTH_LONG).show();
-                                        }
-                            })
-                    .setNegativeButton(android.R.string.no, null)
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                        }
+                    })
                     .show();
         }
+        return flag;
+    }
 
-    // Función para extraer los datos de la vista
     private String extractDataFromEditText(int editTextId) {
         EditText editText = findViewById(editTextId);
         return editText.getText().toString();
