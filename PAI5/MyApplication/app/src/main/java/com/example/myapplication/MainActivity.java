@@ -34,11 +34,15 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        System.out.println("Test");
+        Log.i("Test", "Test");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         // Generar llaves
         generateKeyPair();
+        signData(new Message(1,1,1,1,1));
 
         // Capturamos el boton de Enviar
         View button = findViewById(R.id.button_send);
@@ -51,13 +55,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        new StartServerTask().execute();
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        // client
         new StartClientTask().execute();
 
 
@@ -71,16 +68,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private class StartServerTask extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected Void doInBackground(Void... voids) {
-            Server.startServer();
-            return null;
-        }
-    }
-
     protected void startClient() {
-        Log.d("1","Client started...");
+        Log.i("1","Client started...");
         try {
             Socket s = new Socket("10.0.2.2", 3030);
             this.toServer = new ObjectOutputStream(s.getOutputStream());
