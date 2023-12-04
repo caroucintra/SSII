@@ -9,7 +9,8 @@ import java.util.Base64;
 import java.io.*;
 
 public class Main {
-    private static String clientIpAddress = "127.0.0.1";
+    private static String clientIpAddress = "192.168.1.142";
+    //private static String clientIpAddress = "127.0.0.1";
     private static BufferedReader fromClient;
     private static PublicKey publicKey;    
     private static byte[] signedMessage;
@@ -17,6 +18,7 @@ public class Main {
     private static int idEmpleado;
     private static String peticion;
     private static Database database;
+    private static ReportThread reportThread;
     /*
     private static String publicKeyString = "MIIBITANBgkqhkiG9w0BAQEFAAOCAQ4AMIIBCQKCAQBh8jFNbxObv/N07An2LJnI\n" + 
             "1TEwpKrPog3qQJQ4UgIY2n5Jes1Sl/VUDAdyrx85a8mZjkwLYBO6aL1tniIRtSik\n" + 
@@ -37,6 +39,9 @@ public class Main {
             Socket s = ss.accept();// establishes connection
             System.out.println("Connection established!");
             database = new Database();
+            database.connect();
+            reportThread = new ReportThread("Report Thread", database);
+            reportThread.start();
 
             fromClient = new BufferedReader(new InputStreamReader(s.getInputStream()));
 
@@ -63,12 +68,9 @@ public class Main {
         rawMessage = parsed[0].getBytes();
         signedMessage = Base64.getDecoder().decode(parsed[1]);
 
-        String[] parsed2 = parsed[1].split(",");
+        String[] parsed2 = parsed[0].split(",");
         idEmpleado = Integer.parseInt(parsed2[4]);
-        peticion = parsed2[0] + " camas," + 
-        parsed2[1] + " mesas," + 
-        parsed2[2] + " sillas," +
-        parsed2[3] + " sillones";
+        peticion = parsed[0];
     }
 
 

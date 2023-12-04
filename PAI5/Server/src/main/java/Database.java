@@ -31,6 +31,18 @@ public class Database{
                 rs.close();
                 return publicKey;
             }
+
+            pstmt.setInt(1, 8);
+            pstmt.executeQuery();
+            ResultSet rs2 = pstmt.executeQuery();
+            while (rs2.next()) {
+                String publicKey = rs2.getString("clave_publica");
+                System.out.println(publicKey);
+                rs2.close();
+                return publicKey;
+            }
+
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -76,9 +88,9 @@ public class Database{
             System.out.println(month_two);
             System.out.println(month_three);
 
-            double ratio_one = (month_one.size() == 0) ? 0 : Collections.frequency(month_one, 1) / month_one.size();
-            double ratio_two = (month_two.size() == 0) ? 0 : Collections.frequency(month_two, 1) / month_two.size();
-            double ratio_three = (month_three.size() == 0) ? 0 : Collections.frequency(month_three, 1) / month_three.size();
+            double ratio_one = (month_one.size() == 0) ? 0 : Collections.frequency(month_one, 1) / Double.valueOf(month_one.size());
+            double ratio_two = (month_two.size() == 0) ? 0 : Collections.frequency(month_two, 1) / Double.valueOf(month_two.size());
+            double ratio_three = (month_three.size() == 0) ? 0 : Collections.frequency(month_three, 1) / Double.valueOf(month_three.size());
 
             return new double[]{ratio_one, ratio_two, ratio_three};
         } catch (SQLException e) {
