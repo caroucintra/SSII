@@ -14,11 +14,10 @@ public class Main {
     private static PublicKey publicKey;    
     private static byte[] signedMessage;
     private static byte[] rawMessage;
-    private static String idEmpleado;
+    private static int idEmpleado;
     private static String peticion;
-
-
-
+    private static Database database;
+    /*
     private static String publicKeyString = "MIIBITANBgkqhkiG9w0BAQEFAAOCAQ4AMIIBCQKCAQBh8jFNbxObv/N07An2LJnI\n" + 
             "1TEwpKrPog3qQJQ4UgIY2n5Jes1Sl/VUDAdyrx85a8mZjkwLYBO6aL1tniIRtSik\n" + 
             "Zl7CdKOhFs4HJ4yuExYMGmqBate9vIapi5OiTjE0mSRg/mwdYhSWJyozmET9gRlr\n" + 
@@ -26,6 +25,7 @@ public class Main {
             "Kk0w2N7cmMeBgNoOGADjFYipwgv4d3nITdjRvoLeyrCXhWJH+M8xm69mP4UJK3t2\n" + 
             "23gGRR4VViszS1FnLudT3SMUnDSIzibW0PRbIpv6YHMH/VQRgFb26uNSTLHnb5oj\n" + 
             "AgMBAAE=";
+     */
 
     public static void main(String[] args) {
 
@@ -36,6 +36,7 @@ public class Main {
             ss.bind(serverAddress);
             Socket s = ss.accept();// establishes connection
             System.out.println("Connection established!");
+            database = new Database();
 
             fromClient = new BufferedReader(new InputStreamReader(s.getInputStream()));
 
@@ -46,6 +47,7 @@ public class Main {
                     parseMessage(message);
                     generateKeyPair();
                     boolean verified = doVerify(publicKey,rawMessage,signedMessage);
+                    database.insertPetition(peticion, idEmpleado, verified);
                     System.out.println(verified);
                 }
             }
@@ -62,17 +64,18 @@ public class Main {
         signedMessage = Base64.getDecoder().decode(parsed[1]);
 
         String[] parsed2 = parsed[1].split(",");
-        idEmpleado = parsed2[4];
+        idEmpleado = Integer.parseInt(parsed2[4]);
         peticion = parsed2[0] + " camas," + 
         parsed2[1] + " mesas," + 
-        parsed[2] + " sillas," + 
-        parsed[3] + " sillones";
+        parsed2[2] + " sillas," +
+        parsed2[3] + " sillones";
     }
 
 
 
     private static void generateKeyPair() {
         try {
+            String publicKeyString = database.getPublicKeyForUser(idEmpleado);
 
             StringBuilder pkcs8Lines = new StringBuilder();
             BufferedReader rdr = new BufferedReader(new StringReader(publicKeyString));
