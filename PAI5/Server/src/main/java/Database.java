@@ -87,10 +87,12 @@ public class Database{
     }
 
     public static void main(String[] args) {
+        /*
         Database db = new Database();
         db.connect();
         db.insertPetition("1,1,1,1,1", 111, true);
         db.getPublicKeyForUser(111);
         db.getAllPetitions();
+         */
     }
 }
