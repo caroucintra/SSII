@@ -9,8 +9,8 @@ import java.util.Base64;
 import java.io.*;
 
 public class Main {
-    private static String clientIpAddress = "192.168.1.142";
-    //private static String clientIpAddress = "127.0.0.1";
+    //private static String clientIpAddress = "192.168.1.142";
+    private static String clientIpAddress = "127.0.0.1";
     private static BufferedReader fromClient;
     private static PublicKey publicKey;    
     private static byte[] signedMessage;

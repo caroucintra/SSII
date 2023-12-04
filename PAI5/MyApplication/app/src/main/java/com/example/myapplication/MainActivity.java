@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Setup Server information
     protected static String server = "10.0.2.2";
-    protected static int port = 7070;
+    protected static int port = 3030;
 
     private String privKeyString =
             "MIIEogIBAAKCAQBh8jFNbxObv/N07An2LJnI1TEwpKrPog3qQJQ4UgIY2n5Jes1S" +
@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
     protected void startClient() {
         Log.i("1","Client started...");
         try {
-            Socket s = new Socket("10.0.2.2", 3030);
+            Socket s = new Socket(server, port);
             this.toServer = new PrintWriter(s.getOutputStream());
 
         } catch(Exception e) {

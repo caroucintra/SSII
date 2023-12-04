@@ -1,1 +1,11 @@
 Month: 1 | Year: 1 | Ratio current month: 0,333 | Tendency: 0
+Month: 2 | Year: 1 | Ratio current month: 1,000 | Tendency: 0
+Month: 3 | Year: 1 | Ratio current month: 0,000 | Tendency: -
+Month: 4 | Year: 1 | Ratio current month: 0,800 | Tendency: -
+Month: 5 | Year: 1 | Ratio current month: 1,000 | Tendency: +
+Month: 6 | Year: 1 | Ratio current month: 0,667 | Tendency: -
+Month: 7 | Year: 1 | Ratio current month: 0,750 | Tendency: -
+Month: 8 | Year: 1 | Ratio current month: 0,000 | Tendency: -
+Month: 9 | Year: 1 | Ratio current month: 0,000 | Tendency: -
+Month: 10 | Year: 1 | Ratio current month: 0,000 | Tendency: 0
+Month: 11 | Year: 1 | Ratio current month: 0,000 | Tendency: 0
