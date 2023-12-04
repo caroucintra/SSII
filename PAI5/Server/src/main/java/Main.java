@@ -45,7 +45,7 @@ public class Main {
                 while ((message = fromClient.readLine()) != null) {
                     System.out.println(message);
                     parseMessage(message);
-                    generateKeyPair();
+                    generatePublicKey();
                     boolean verified = doVerify(publicKey,rawMessage,signedMessage);
                     database.insertPetition(peticion, idEmpleado, verified);
                     System.out.println(verified);
@@ -73,7 +73,7 @@ public class Main {
 
 
 
-    private static void generateKeyPair() {
+    private static void generatePublicKey() {
         try {
             String publicKeyString = database.getPublicKeyForUser(idEmpleado);
 
