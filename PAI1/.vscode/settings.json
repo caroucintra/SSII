@@ -1,0 +1,9 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/Users/julenogaj/.vscode/extensions/stefanwehr.write-your-python-program-1.0.6/python/src/"
+    ],
+    "python.linting.enabled": false,
+    "python.analysis.extraPaths": [
+        "/Users/julenogaj/.vscode/extensions/stefanwehr.write-your-python-program-1.0.6/python/src/"
+    ]
+}
